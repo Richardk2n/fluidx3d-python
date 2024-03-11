@@ -29,16 +29,21 @@ plt.rcParams.update(
 )
 plt.rcParams["image.origin"] = "lower"
 
+
 def rgb(r, g, b):
     return r / 255, g / 255, b / 255
 
+
 tabColors = list(mcolors.TABLEAU_COLORS.keys())
+
 
 def color(index):
     index %= len(tabColors)
     return tabColors[index]
 
+
 backgroundColor = rgb(255, 255, 255)
+
 
 def dark(r=51, g=51, b=51):
     global backgroundColor
@@ -46,5 +51,6 @@ def dark(r=51, g=51, b=51):
     backgroundColor = rgb(r, g, b)
     plt.rcParams["figure.facecolor"] = rgb(r, g, b)
     plt.rcParams["axes.facecolor"] = rgb(r, g, b)
+
 
 cm = 1 / 2.54
