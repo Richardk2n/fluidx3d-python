@@ -51,6 +51,7 @@ def dark(r=51, g=51, b=51):
     backgroundColor = rgb(r, g, b)
     plt.rcParams["figure.facecolor"] = rgb(r, g, b)
     plt.rcParams["axes.facecolor"] = rgb(r, g, b)
+    plt.rcParams["savefig.facecolor"] = rgb(r, g, b)
 
 
 cm = 1 / 2.54
