@@ -37,7 +37,9 @@ class RT_DC:
         self.lengthSI: float = lengthSI
         self.paddingSI: float = paddingSI
 
-    def generateMasks(self, numberComponents: List[int], dims: Tuple[int, int, int], L0: float = 1):
+    def generateMasks(
+        self, dims: Tuple[int, int, int], L0: float = 1, numberComponents: List[int] = [1, 3, 6]
+    ):
         Lx, Ly, Lz = dims
         width: int = np.round(self.widthSI / L0)
         length: int = np.round(self.lengthSI / L0)
@@ -80,6 +82,12 @@ class RT_DC:
 
     def getMask(self, numberComponents: int) -> np.ndarray:
         return self.masks[numberComponents]
+
+    def __getattr__(self, name: str) -> np.ndarray:
+        if name.startswith("mask"):
+            return self.getMask(int(name[4:]))
+        else:
+            raise AttributeError
 
 
 guck = RT_DC(20e-6, 300e-6, 400e-6)
