@@ -50,9 +50,18 @@ def getInital(point1, timesteps):
 
     transformed = fft(cosNuTs)
     freq = fftfreq(timesteps.shape[-1], d=timesteps[1] - timesteps[0])
-
     # The square gives double frequency -> only multiply with pi
-    return a1sGuess, a2sGuess, -np.abs(freq[np.argmin(transformed)]) * np.pi
+    nu = -np.abs(freq[np.argmin(transformed)]) * np.pi
+
+    aMax = np.argmax(point1[..., 0] ** 2 + point1[..., 1] ** 2)
+    t = timesteps[aMax]
+    k = np.floor(-nu * t / np.pi)
+    phaseGuess = -nu * t - k * np.pi
+    # The phaseGuess is for a squared cos, therefore it might be off by pi
+    if phaseGuess > np.pi / 2:
+        phaseGuess += np.pi  # Bring the phase as close to 0 as possible
+
+    return a1sGuess, a2sGuess, nu, phaseGuess
 
 
 # Expects points to be centered. Expect normalized.
@@ -60,13 +69,13 @@ def extractRoscoe(timesteps, point1, point5, cutoff):
     t = timesteps[cutoff:]
     p1 = point1[cutoff:]
     p5 = point5[cutoff:]
-    a1sGuess, a2sGuess, ttfGuess = getInital(p1, t)
+    a1sGuess, a2sGuess, ttfGuess, phaseGuess = getInital(p1, t)
 
     param1, cov1 = curve_fit(
         modelRadiusSquared,
         t,
         p1[..., 0] ** 2 + p1[..., 1] ** 2,
-        [a1sGuess, a2sGuess, ttfGuess, np.pi],
+        [a1sGuess, a2sGuess, ttfGuess, phaseGuess],
         bounds=([1, 0, -np.inf, 0], [np.inf, np.inf, 0, 2 * np.pi]),
     )
     e1 = np.sqrt(np.diag(cov1))
