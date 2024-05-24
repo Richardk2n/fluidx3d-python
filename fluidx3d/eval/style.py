@@ -20,8 +20,9 @@ plt.rcParams.update(
                 r"\usepackage[locale=US]{siunitx}"
                 r"\sisetup{per-mode=fraction}"
                 r"\sisetup{separate-uncertainty=true}"
-                r"\newcommand{\ma}[1]{\underline{#1}}"
                 r"\usepackage{amsmath}"
+                r"\newcommand{\abs}[1]{\lvert#1\rvert}"
+                r"\newcommand{\ma}[1]{\underline{#1}}"
                 r"\DeclareMathOperator{\Tr}{Tr}"
             ]
         )
