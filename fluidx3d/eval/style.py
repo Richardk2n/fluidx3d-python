@@ -10,25 +10,27 @@ Created on Fri Apr 14 14:49:37 2023
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 
-plt.rcParams.update({"font.size": 12})
-plt.rcParams.update({"text.usetex": True})
-plt.rcParams.update({"figure.autolayout": True})
-plt.rcParams.update(
-    {
-        "text.latex.preamble": "".join(
-            [
-                r"\usepackage[locale=US]{siunitx}"
-                r"\sisetup{per-mode=fraction}"
-                r"\sisetup{separate-uncertainty=true}"
-                r"\usepackage{amsmath}"
-                r"\newcommand{\abs}[1]{\lvert#1\rvert}"
-                r"\newcommand{\ma}[1]{\underline{#1}}"
-                r"\DeclareMathOperator{\Tr}{Tr}"
-            ]
-        )
-    }
-)
-plt.rcParams["image.origin"] = "lower"
+
+def setRC():
+    plt.rcParams.update({"font.size": 12})
+    plt.rcParams.update({"text.usetex": True})
+    plt.rcParams.update({"figure.autolayout": True})
+    plt.rcParams.update(
+        {
+            "text.latex.preamble": "".join(
+                [
+                    r"\usepackage[locale=US]{siunitx}"
+                    r"\sisetup{per-mode=fraction}"
+                    r"\sisetup{separate-uncertainty=true}"
+                    r"\usepackage{amsmath}"
+                    r"\newcommand{\abs}[1]{\lvert#1\rvert}"
+                    r"\newcommand{\ma}[1]{\underline{#1}}"
+                    r"\DeclareMathOperator{\Tr}{Tr}"
+                ]
+            )
+        }
+    )
+    plt.rcParams["image.origin"] = "lower"
 
 
 def rgb(r, g, b):
@@ -55,6 +57,7 @@ def style(style: str, r, g, b):
 
 def dark_():
     style("dark", 51, 51, 51)
+    setRC()
 
 
 def dark():
@@ -64,6 +67,7 @@ def dark():
 
 def light_():
     style("light", 255, 255, 255)
+    setRC()
 
 
 def light():
