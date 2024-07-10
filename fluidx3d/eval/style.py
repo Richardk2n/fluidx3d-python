@@ -31,6 +31,7 @@ def setRC():
         }
     )
     plt.rcParams["image.origin"] = "lower"
+    plt.rcParams["figure.dpi"] = 1200
 
 
 def rgb(r, g, b):
@@ -75,14 +76,22 @@ def light():
     light_()
 
 
+def addKwargs(kwargs):
+    if "bbox_inches" not in kwargs:
+        kwargs["bbox_inches"] = "tight"
+    if "pad_inches" not in kwargs:
+        kwargs["pad_inches"] = 0
+    return kwargs
+
+
 def savefig(name: str, **kwargs):
     global activeStyle
     if activeStyle == "light":
-        plt.savefig(f"{name}#light.pdf", **kwargs)
+        plt.savefig(f"{name}#light.pdf", **addKwargs(kwargs))
     elif activeStyle == "dark":
-        plt.savefig(f"{name}#dark.pdf", **kwargs)
+        plt.savefig(f"{name}#dark.pdf", **addKwargs(kwargs))
     else:
-        plt.savefig(f"{name}.pdf", **kwargs)
+        plt.savefig(f"{name}.pdf", **addKwargs(kwargs))
 
 
 def styled(plotFunction):
