@@ -51,7 +51,20 @@ def getInital(point1, timesteps):
     transformed = fft(cosNuTs)
     freq = fftfreq(timesteps.shape[-1], d=timesteps[1] - timesteps[0])
     # The square gives double frequency -> only multiply with pi
-    nu = -np.abs(freq[np.argmin(transformed)]) * np.pi
+
+    # Remove zero peak
+    zeroIndex = np.argmin(np.abs(freq))
+    mask = np.zeros(transformed.shape)
+    mask[zeroIndex] = 1
+    transformed = np.ma.masked_array(transformed, mask)
+
+    nu_min = -np.abs(freq[np.argmin(transformed)]) * np.pi
+    wmin = np.abs(np.min(transformed))
+    nu_max = -np.abs(freq[np.argmax(transformed)]) * np.pi
+    wmax = np.abs(np.max(transformed))
+
+    # Find ttf from fft with sub resolution accuracy
+    nu = (nu_min * wmin + nu_max * wmax) / (wmin + wmax)
 
     aMax = np.argmax(point1[..., 0] ** 2 + point1[..., 1] ** 2)
     t = timesteps[aMax]
