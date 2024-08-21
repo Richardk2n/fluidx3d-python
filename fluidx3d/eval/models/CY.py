@@ -45,7 +45,7 @@ class CY:
 
         edgeGD = sol.root
 
-        gds = np.arange(0, 1 + stepSize, stepSize) * edgeGD
+        gds = np.arange(0, 1 + 2 * stepSize, stepSize) * edgeGD
         rs = -2 / G * self.eta(gds) * gds
 
         def getInterpolGD():
