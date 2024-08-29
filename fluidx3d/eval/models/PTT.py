@@ -19,11 +19,11 @@ pipe = 1
 
 
 class PTT:
-    def __init__(self, eta_p, lambda_p, epsilon, eta_s, xi=0):
+    def __init__(self, eta_p, lambda_p, eta_s, epsilon, xi=0):
         self.eta_p = eta_p
         self.lambda_p = lambda_p
-        self.epsilon = epsilon
         self.eta_s = eta_s
+        self.epsilon = epsilon
         self.xi = xi
         if xi != 0:
             print("xi != 0 is not implemented!")
@@ -213,7 +213,7 @@ class PTT:
         plt.show()
 
 
-alginate = PTT(48.2, 0.343, 0.545, 1e-3)
-mc0_49 = PTT(18.7e-3, 0.344e-3, 0.27, 1e-3)
-mc0_59 = PTT(32.5e-3, 0.433e-3, 0.365, 1e-3)
-mc0_83 = PTT(81e-3, 0.714e-3, 0.496, 1e-3)
+alginate = PTT(48.2, 0.343, 1e-3, 0.545)
+mc0_49 = PTT(18.7e-3, 0.344e-3, 1e-3, 0.27)
+mc0_59 = PTT(32.5e-3, 0.433e-3, 1e-3, 0.365)
+mc0_83 = PTT(81e-3, 0.714e-3, 1e-3, 0.496)
