@@ -18,9 +18,9 @@ pipe = 1
 
 
 class PowerLaw:
-    def __init__(self, eta_p, gd0, eta_s, power):
+    def __init__(self, eta_p, lambda_p, eta_s, power):
         self.eta_p = eta_p
-        self.gd0 = gd0
+        self.gd0 = 1/lambda_p
         self.eta_s = eta_s
         self.power = power
 
