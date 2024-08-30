@@ -115,3 +115,7 @@ class PowerLaw:
         plt.ylabel(r"$\sigma/\unit{\pascal}$")
         plt.legend()
         plt.show()
+
+
+mc0_49 = PowerLaw(1.492, 100, 0, 0.3736)
+mc0_59 = PowerLaw(2.514, 100, 0, 0.3961)
