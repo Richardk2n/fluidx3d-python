@@ -84,6 +84,10 @@ def addKwargs(kwargs):
     return kwargs
 
 
+def figure(**kwargs):
+    return plt.figure(figsize=(15.5 * cm, 15.5 / 2 * cm), **kwargs)
+
+
 def savefig(name: str, **kwargs):
     global activeStyle
     if activeStyle == "light":
@@ -105,6 +109,19 @@ def styled(plotFunction):
         plt.show()
 
 
+def styledF(plotFunction):
+    with plt.style.context("default"):
+        light_()
+        figure()
+        plotFunction()
+        plt.close()
+    with plt.style.context("dark_background"):
+        dark_()
+        figure()
+        plotFunction()
+        plt.show()
+
+
 def styledS(plotFunction):
     with plt.style.context("default"):
         light_()
@@ -114,10 +131,6 @@ def styledS(plotFunction):
         dark_()
         plotFunction()
         plt.close()
-
-
-def figure(**kwargs):
-    return plt.figure(figsize=(15.5 * cm, 15.5 / 2 * cm), **kwargs)
 
 
 dark()
