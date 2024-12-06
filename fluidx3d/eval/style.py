@@ -80,7 +80,7 @@ def addKwargs(kwargs):
     if "bbox_inches" not in kwargs:
         kwargs["bbox_inches"] = "tight"
     if "pad_inches" not in kwargs:
-        kwargs["pad_inches"] = 0
+        kwargs["pad_inches"] = 0.1 * cm
     return kwargs
 
 
