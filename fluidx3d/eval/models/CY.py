@@ -20,12 +20,12 @@ pipe = 1
 
 
 class CY:
-    def __init__(self, eta_p, lambda_p, eta_s, a1, a2):
+    def __init__(self, eta_p, lambda_p, eta_s, a, power):
         self.eta_p = eta_p
         self.lambda_p = lambda_p
         self.eta_s = eta_s
-        self.a1 = a1
-        self.a2 = a2
+        self.a = a
+        self.power = power
 
     def prepareVelocityProfile(self, R, G, j):  # TODO check j
         stepSize = 1e-6
@@ -119,7 +119,7 @@ class CY:
     def eta(self, gd):
         gd = np.abs(gd)
         return (
-            self.eta_p / (1 + (self.lambda_p * gd) ** self.a1) ** (self.a2 / self.a1) + self.eta_s
+            self.eta_p / (1 + (self.lambda_p * gd) ** self.a) ** (self.power / self.a) + self.eta_s
         )
 
     def u(self, _):
