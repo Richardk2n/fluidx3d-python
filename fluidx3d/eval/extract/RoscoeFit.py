@@ -115,7 +115,26 @@ def extractRoscoe(timesteps, point1, point5, cutoff):
     th = param2[0]
     errth = e2[0]
 
-    return (a1, a2, a3, th, ttf, phase), (err1, err2, err3, errth, errttf, errPhase)
+    return Roscoe((a1, a2, a3, th, ttf, phase), (err1, err2, err3, errth, errttf, errPhase))
 
 
-__all__ = ["extractRoscoe"]
+class Roscoe:
+
+    def __init__(self, params, errors):
+        self.a1, self.a2, self.a3, self.th, self.ttf, self.phase = params
+        self.errors = errors
+
+    def x(self, t):
+        return modelX1(t, self.a1, self.a2, self.th, self.ttf, self.phase)
+
+    def y(self, t):
+        return modelY1(t, self.a1, self.a2, self.th, self.ttf, self.phase)
+
+    def r2(self, t):
+        return modelRadiusSquared(t, self.a1**2, self.a2**2, self.ttf, self.phase)
+
+    def __str__(self):  # TODO make better
+        return str([[self.a1, self.a2, self.a3, self.th, self.ttf, self.phase], self.errors])
+
+
+__all__ = ["extractRoscoe", "Roscoe"]
