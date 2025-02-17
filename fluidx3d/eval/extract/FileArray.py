@@ -10,29 +10,70 @@ Created on Thu Jan 30 13:26:48 2025
 import os
 from multiprocessing import Pool
 from pathlib import Path
+from typing import Self
 
 import numpy as np
 import pyvista as pv
 from natsort import natsorted
 
 from fluidx3d.eval.extract.CellFile import CellFile
-
-symbols = {"cell": "cells"}
+from fluidx3d.eval.extract.FieldFile import FieldFile
 
 
 class FileArray:
 
-    def __init__(self, path: Path):
+    def __init__(
+        self,
+        path: Path,
+        symbol: str,
+        conversionFactor: int,
+        numberComponents: int,
+    ):
         self.path = path
-        self.symbol = symbols[self.path.name]
-        self.classType = CellFile if self.symbol == "cells" else None
-        files = natsorted(os.listdir(path))
-        self.vtkIntervall = int(
-            files[1].split("_")[1].split(".")[0]
-        )  # TODO this could be determined further up, but is fast anyway
+        self.symbol = symbol
+        self.conversionFactor = conversionFactor
+        self.numberComponents = numberComponents
+
+    def scout(self) -> None:
+        files = natsorted(os.listdir(self.path))
         self.numberFiles = len(files)
-        self.fileCache = [None] * self.numberFiles
-        self.fullyCached = False
+
+        if self.numberFiles > 1:
+            self.vtkIntervall = int(
+                files[1].split("_")[1].split(".")[0]
+            )  # this could be determined further up, but is fast anyway
+        else:
+            self.vtkIntervall = 0
+
+        self.files: list[CellFile | FieldFile] = []
+        for i in range(self.numberFiles):
+            if self.symbol == "cells":
+                self.files.append(CellFile(self.path / f"{self.symbol}_{i*self.vtkIntervall}.vtk"))
+            else:
+                self.files.append(
+                    FieldFile(
+                        self.path / f"{self.symbol}_{i*self.vtkIntervall}.vtk",
+                        self.path.name,
+                        self.numberComponents,
+                        self.conversionFactor,
+                    )
+                )
+
+    def cache(self) -> Self:
+        with Pool() as p:
+            if self.symbol == "cells":
+                self.files = p.map(CellFile.cache, self.files)
+            else:
+                self.files = p.map(FieldFile.cache, self.files)
+        return self
+
+    def __getitem__(self, i) -> CellFile | FieldFile:
+        return self.files[i]
+
+
+"""
+        with Pool() as p:
+            self.fileCache = p.map(self.classType, paths)
 
     def cacheAll(self):
         paths = [
@@ -63,3 +104,4 @@ class FileArray:
             )
 
         return p1s / R, p5s / R
+"""

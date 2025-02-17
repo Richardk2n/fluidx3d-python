@@ -8,6 +8,7 @@ Created on Thu Jan 30 13:21:13 2025
 """
 
 from pathlib import Path
+from typing import Self
 
 import numpy as np
 import pyvista as pv
@@ -16,14 +17,25 @@ import pyvista as pv
 class CellFile:
 
     def __init__(self, path: Path):
-        data = pv.read(path)
+        self.path = path
+        self.cached = False
+
+    def cache(self) -> Self:
+        if self.cached:
+            return self
+        data = pv.read(self.path)
         self.points = data.points
 
         self.com = np.average(self.points, 0)
         self.p1 = self.points[1] - self.com
         self.p5 = self.points[5] - self.com
 
+        self.cached = True
+        return self
+
     def getSpecialPoints(self):
+        if not self.cached:
+            self.cache()
         return self.p1, self.p5
 
     @staticmethod
