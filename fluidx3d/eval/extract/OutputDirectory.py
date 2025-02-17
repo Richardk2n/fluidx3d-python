@@ -68,7 +68,7 @@ class OutputDirectory:
             self.ids[name] = i
 
             kg, m, s = conversion[name]
-            fac = self.SI["kg"] ** kg * self.SI["m"] ** m * self.SI["s"] * s
+            fac = self.SI["kg"] ** kg * self.SI["m"] ** m * self.SI["s"] ** s
             if name == "density":
                 fac /= self.SI["ReScale"]
             self.arrays.append(
