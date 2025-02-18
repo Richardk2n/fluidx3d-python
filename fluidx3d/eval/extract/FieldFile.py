@@ -80,6 +80,11 @@ class FieldFile:
         self.cached = True
         return self
 
+    def getField(self):
+        if not self.cached:
+            self.cache()
+        return self.field
+
     def mask(self, mask) -> Self:
         if not self.cached:
             self.cache()

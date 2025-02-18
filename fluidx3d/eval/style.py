@@ -7,6 +7,9 @@ Created on Fri Apr 14 14:49:37 2023
 @author: Richard Kellnberger
 """
 
+import os
+from pathlib import Path
+
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 
@@ -88,14 +91,15 @@ def figure(**kwargs):
     return plt.figure(figsize=(15.5 * cm, 15.5 / 2 * cm), **kwargs)
 
 
-def savefig(name: str, **kwargs):
+def savefig(path: Path, **kwargs):
     global activeStyle
+    os.makedirs(path.parent, exist_ok=True)
     if activeStyle == "light":
-        plt.savefig(f"{name}#light.pdf", **addKwargs(kwargs))
+        plt.savefig(f"{path}#light.pdf", **addKwargs(kwargs))
     elif activeStyle == "dark":
-        plt.savefig(f"{name}#dark.pdf", **addKwargs(kwargs))
+        plt.savefig(f"{path}#dark.pdf", **addKwargs(kwargs))
     else:
-        plt.savefig(f"{name}.pdf", **addKwargs(kwargs))
+        plt.savefig(f"{path}.pdf", **addKwargs(kwargs))
 
 
 def styled(plotFunction):

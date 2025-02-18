@@ -9,15 +9,11 @@ Created on Mon Feb 17 17:53:07 2025
 
 import json
 import os
-from multiprocessing import Pool
 from pathlib import Path
 
 import numpy as np
-import pyvista as pv
 from natsort import natsorted
 
-from fluidx3d.eval.extract.CellFile import CellFile
-from fluidx3d.eval.extract.FieldFile import FieldFile
 from fluidx3d.eval.extract.FileArray import FileArray
 
 TYPE_W = 0b00000001  # Simple bounce-back wall
@@ -39,6 +35,7 @@ class OutputDirectory:
     def __init__(self, path: Path):
         self.path = path
         self.scout()
+        self.masks: dict[int, np.ndarray] = {}
 
     def scout(self) -> None:
         jsonFile = self.path / "parameters.json"
@@ -80,8 +77,49 @@ class OutputDirectory:
         for array in self.arrays:
             array.cache()
 
+    def mask(self):
+        for name in self.ids:
+            nc = numberComponents[name]
+            mask = self.getMask(nc)
+            self.arrays[self.ids[name]].mask(mask)
+
+    def getMask(self, numberComponents: int):
+        if numberComponents in self.masks:
+            return self.masks[numberComponents]
+        elif "flags" in self.ids:
+            if 1 not in self.masks:
+                self.masks[1] = self.flags[-1].getField().astype(int) & TYPE_W
+                self.Lx, self.Ly, self.Lz, _ = self.masks[1].shape
+            if numberComponents == 1:
+                return self.masks[1]
+
+            self.masks[numberComponents] = (
+                np.ones((self.Lx, self.Ly, self.Lz, numberComponents)) * self.masks[1]
+            )
+            return self.masks[numberComponents]
+        else:
+            print("Cannot mask without flags")
+
+    def getDims(self):
+        if self.Lx:
+            return self.Lx, self.Ly, self.Lz
+
+        for name in self.ids:
+            if name != "cell":
+                self.Lx, self.Ly, self.Lz, _ = self.arrays[self.ids[name]].getField().shape
+                return self.Lx, self.Ly, self.Lz
+        print("Cannot get dimensions of non existent fields")
+
+    def getExtent(self, fac: float):
+        Lx, Ly, Lz = self.getDims()
+        m = self.SI["m"]
+        Ex = (-0.5 * m * fac, (Lx - 1 + 0.5) * m * fac)
+        Ey = (-Ly / 2 * m * fac, Ly / 2 * m * fac)
+        Ez = (-Lz / 2 * m * fac, Lz / 2 * m * fac)
+        return Ex, Ey, Ez
+
     def __getattr__(self, name: str):
         if name in symbols:
             return self.arrays[self.ids[name]]
         else:
-            print(f"VTK Array {name} does not exist!")
+            raise Exception(f"VTK Array {name} does not exist!")

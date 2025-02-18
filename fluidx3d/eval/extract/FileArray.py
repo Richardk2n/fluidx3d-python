@@ -10,10 +10,7 @@ Created on Thu Jan 30 13:26:48 2025
 import os
 from multiprocessing import Pool
 from pathlib import Path
-from typing import Self
 
-import numpy as np
-import pyvista as pv
 from natsort import natsorted
 
 from fluidx3d.eval.extract.CellFile import CellFile
@@ -59,13 +56,18 @@ class FileArray:
                     )
                 )
 
-    def cache(self) -> Self:
+    def cache(self) -> None:
         with Pool() as p:
             if self.symbol == "cells":
                 self.files = p.map(CellFile.cache, self.files)
             else:
                 self.files = p.map(FieldFile.cache, self.files)
-        return self
+
+    def mask(self, mask) -> None:
+        if self.path.name == "flags" or self.symbol == "cells":
+            return
+        with Pool() as p:
+            self.files = p.starmap(FieldFile.mask, zip(self.files, [mask] * self.numberFiles))
 
     def __getitem__(self, i) -> CellFile | FieldFile:
         return self.files[i]
