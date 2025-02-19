@@ -51,6 +51,16 @@ def color(index):
     return tabColors[index]
 
 
+def textColor():
+    global activeStyle
+    if activeStyle == "light":
+        return "k"
+    elif activeStyle == "dark":
+        return "w"
+    else:
+        return "k"
+
+
 def style(style: str, r, g, b):
     global activeStyle
     activeStyle = style
