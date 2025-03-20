@@ -22,4 +22,6 @@ class Hertz:
         return self.prefactor * (force / youngsModulus) ** (2 / 3) + offset
 
     def force(self, deformation, youngsModulus, offset):
-        return youngsModulus * ((deformation - offset) / self.prefactor) ** (3 / 2)
+        return youngsModulus * (np.clip(deformation - offset, 0, np.inf) / self.prefactor) ** (
+            3 / 2
+        )
