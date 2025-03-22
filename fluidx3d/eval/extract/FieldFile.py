@@ -80,6 +80,11 @@ class FieldFile:
         self.cached = True
         return self
 
+    def unload(self) -> Self:
+        self.cached = False
+        del self.field
+        return self
+
     def getField(self):
         if not self.cached:
             self.cache()

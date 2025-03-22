@@ -25,9 +25,21 @@ TYPE_SW = 0b00100000  # Free slip boundary wall
 
 TYPE_F = 0b10000000  # fluid // TODO remove // ATTENTION also recycled for force evaluation
 
-symbols = {"cell": "cells", "velocity": "u", "density": "ρ", "flags": "flags"}
-conversion = {"cell": [0, 0, 0], "velocity": [0, 1, -1], "density": [1, -3, 0], "flags": [0, 0, 0]}
-numberComponents = {"cell": 0, "velocity": 3, "density": 1, "flags": 1}
+symbols = {
+    "cell": "cells",
+    "velocity": "u",
+    "density": "ρ",
+    "flags": "flags",
+    "strainRateTensor": "D",
+}
+conversion = {
+    "cell": [0, 0, 0],
+    "velocity": [0, 1, -1],
+    "density": [1, -3, 0],
+    "flags": [0, 0, 0],
+    "strainRateTensor": [0, 0, -1],
+}
+numberComponents = {"cell": 0, "velocity": 3, "density": 1, "flags": 1, "strainRateTensor": 6}
 
 
 class OutputDirectory:
@@ -101,12 +113,15 @@ class OutputDirectory:
             print("Cannot mask without flags")
 
     def getDims(self):
-        if self.Lx:
-            return self.Lx, self.Ly, self.Lz
+        try:
+            if self.Lx:
+                return self.Lx, self.Ly, self.Lz
+        except Exception:
+            pass
 
         for name in self.ids:
             if name != "cell":
-                self.Lx, self.Ly, self.Lz, _ = self.arrays[self.ids[name]].getField().shape
+                self.Lx, self.Ly, self.Lz, _ = self.arrays[self.ids[name]][0].getField().shape
                 return self.Lx, self.Ly, self.Lz
         print("Cannot get dimensions of non existent fields")
 
