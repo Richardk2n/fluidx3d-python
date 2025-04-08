@@ -27,6 +27,11 @@ class CY:
         self.a = a
         self.power = power
 
+    @staticmethod
+    def modelEta(gd, eta_p, lambda_p, a, power, eta_s=1e-3):
+        gd = np.abs(gd)
+        return eta_p / (1 + (lambda_p * gd) ** a) ** (power / a) + eta_s
+
     def prepareVelocityProfile(self, R, G, j):  # TODO check j
         stepSize = 1e-6
 
@@ -117,10 +122,7 @@ class CY:
         )
 
     def eta(self, gd):
-        gd = np.abs(gd)
-        return (
-            self.eta_p / (1 + (self.lambda_p * gd) ** self.a) ** (self.power / self.a) + self.eta_s
-        )
+        return self.modelEta(gd, self.eta_p, self.lambda_p, self.a, self.power, self.eta_s)
 
     def u(self, _):
         raise Exception("Forgot to call prepareVelocityProfile before u")

@@ -28,6 +28,14 @@ class PTT:
         if xi != 0:
             print("xi != 0 is not implemented!")
 
+    @staticmethod
+    def modelEta(gd, eta_p, lambda_p, epsilon, eta_s=1e-3):
+        return eta_p / np.exp(0.5 * lambertw(4 * epsilon * (gd * lambda_p) ** 2).real) + eta_s
+
+    @staticmethod
+    def modelN_1(gd, eta_p, lambda_p, epsilon, eta_s=1e-3):
+        return eta_p / (2 * epsilon * lambda_p) * lambertw(4 * epsilon * (lambda_p * gd) ** 2).real
+
     def prepareVelocityProfile(self, R, G, j):
         c = 2**j * self.eta_s / (-G)
         d = 2 * np.sqrt(self.epsilon) * self.lambda_p
@@ -150,17 +158,10 @@ class PTT:
         )
 
     def eta(self, gd):
-        return (
-            self.eta_p / np.exp(0.5 * lambertw(4 * self.epsilon * (gd * self.lambda_p) ** 2).real)
-            + self.eta_s
-        )
+        return self.modelEta(gd, self.eta_p, self.lambda_p, self.epsilon, self.eta_s)
 
     def N_1(self, gd):
-        return (
-            self.eta_p
-            / (2 * self.epsilon * self.lambda_p)
-            * lambertw(4 * self.epsilon * (self.lambda_p * gd) ** 2).real
-        )
+        return self.modelN_1(gd, self.eta_p, self.lambda_p, self.epsilon, self.eta_s)
 
     def u(self, _):
         raise Exception("Forgot to call prepareVelocityProfile before u")

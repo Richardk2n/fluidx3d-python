@@ -20,9 +20,16 @@ pipe = 1
 class PowerLaw:
     def __init__(self, eta_p, lambda_p, eta_s, power):
         self.eta_p = eta_p
-        self.gd0 = 1/lambda_p
+        self.lambda_p = lambda_p
+        self.gd0 = 1 / lambda_p
         self.eta_s = eta_s
         self.power = power
+
+    @staticmethod
+    def modelEta(gd, eta_p, lambda_p, power, eta_s=1e-3):
+        gd = np.abs(gd)
+
+        return np.clip(eta_p / (lambda_p * gd) ** power + eta_s, 0, eta_p + eta_s)
 
     def prepareVelocityProfile(self, R, G, j):  # TODO check j
         if j == 0:
@@ -60,11 +67,7 @@ class PowerLaw:
         self.Q = Q()
 
     def eta(self, gd):
-        gd = np.abs(gd)
-
-        return np.clip(
-            self.eta_p / (gd / self.gd0) ** self.power + self.eta_s, 0, self.eta_p + self.eta_s
-        )
+        return self.modelEta(gd, self.eta_p, self.lambda_p, self.power, self.eta_s)
 
     def u(self, _):
         raise Exception("Forgot to call prepareVelocityProfile before u")
