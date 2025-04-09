@@ -175,7 +175,13 @@ class CY:
         plt.show()
 
 
-alginate = CY(48.2, 0.26, 1e-3, 1.101, 0.9185)
-mc0_49 = CY(18.7e-3, 0.261e-3, 1e-3, 1.469, 0.837)
+# These are fitted to PTT not to the data directly
+alginate = CY(48.2, 0.26, 1e-3, 1.101, 0.9185)  # SFB Alginate
+mc0_49 = CY(18.7e-3, 0.261e-3, 1e-3, 1.469, 0.837)  # Fluids from Büyükurgancı
 mc0_59 = CY(32.5e-3, 0.369e-3, 1e-3, 1.432, 0.847)
 mc0_83 = CY(81e-3, 0.682e-3, 1e-3, 1.374, 0.8606)
+# Direct fit to data
+alginate_D = CY(45.2, 0.021, 1e-3, 0.61, 1.9)
+mc0_49_D = CY(19.52e-3, 1.4e-3, 1e-3, 1.1, 0.37)
+mc0_59_D = CY(34.7e-3, 1.8e-3, 1e-3, 0.91, 0.43)
+mc0_83_D = CY(87.6e-3, 4.2e-3, 1e-3, 1.07, 0.46)
