@@ -21,8 +21,8 @@ class DoubleContact:
         self.k = R32 ** (1 / 3) / (R32 ** (1 / 3) + R12 ** (1 / 3))
         self.hertz = Hertz(R1, R2, poissonRatio)
 
-    def deformation(self, force, youngsModulus, offset):
+    def deformation(self, force, youngsModulus, offset=0):
         return self.hertz.deformation(force, youngsModulus, offset) / self.k
 
-    def force(self, deformation, youngsModulus, offset):
+    def force(self, deformation, youngsModulus, offset=0):
         return self.hertz.force(deformation, youngsModulus, offset) * self.k ** (3 / 2)

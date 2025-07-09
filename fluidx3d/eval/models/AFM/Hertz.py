@@ -18,10 +18,10 @@ class Hertz:
         self.poissonRatio = poissonRatio
         self.prefactor = (3 / 4 * (1 - self.poissonRatio**2) / np.sqrt(R12)) ** (2 / 3)
 
-    def deformation(self, force, youngsModulus, offset):
+    def deformation(self, force, youngsModulus, offset=0):
         return self.prefactor * (force / youngsModulus) ** (2 / 3) + offset
 
-    def force(self, deformation, youngsModulus, offset):
+    def force(self, deformation, youngsModulus, offset=0):
         return youngsModulus * (np.clip(deformation - offset, 0, np.inf) / self.prefactor) ** (
             3 / 2
         )
