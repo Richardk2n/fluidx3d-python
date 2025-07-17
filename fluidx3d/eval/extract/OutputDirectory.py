@@ -65,7 +65,7 @@ class OutputDirectory:
             print("Output directory too old: Missing internal in parameters.json")
 
         vtkPath = self.path / "vtkfiles"
-        arrays = natsorted(os.listdir(vtkPath))
+        arrays = [f for f in natsorted(os.listdir(vtkPath)) if (vtkPath / f).is_dir()]
 
         self.numberArrays = len(arrays)
 
