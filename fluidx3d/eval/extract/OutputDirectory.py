@@ -27,19 +27,31 @@ TYPE_F = 0b10000000  # fluid // TODO remove // ATTENTION also recycled for force
 
 symbols = {
     "cell": "cells",
+    "inout": "inout",
     "velocity": "u",
     "density": "ρ",
     "flags": "flags",
     "strainRateTensor": "D",
+    "polymerConformationTensor": "C",
 }
 conversion = {
     "cell": [0, 0, 0],
+    "inout": [0, 0, 0],
     "velocity": [0, 1, -1],
     "density": [1, -3, 0],
     "flags": [0, 0, 0],
     "strainRateTensor": [0, 0, -1],
+    "polymerConformationTensor": [0, 0, 0],
 }
-numberComponents = {"cell": 0, "velocity": 3, "density": 1, "flags": 1, "strainRateTensor": 6}
+numberComponents = {
+    "cell": 0,
+    "inout": 1,
+    "velocity": 3,
+    "density": 1,
+    "flags": 1,
+    "strainRateTensor": 6,
+    "polymerConformationTensor": 6,
+}
 
 
 class OutputDirectory:
