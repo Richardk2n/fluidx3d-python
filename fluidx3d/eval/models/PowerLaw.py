@@ -32,7 +32,9 @@ class PowerLaw:
         return np.clip(eta_p / (lambda_p * gd) ** power + eta_s, 0, eta_p + eta_s)
 
     def prepareVelocityProfile(self, R, G, j):  # TODO check j
-        if j == 0:
+        if (
+            j == 0 or self.eta_s != 0
+        ):  # TODO pretty sure the solutions here are only valid without solvent viscosity
             raise Exception("Not implemented")
 
         def gd(r):
