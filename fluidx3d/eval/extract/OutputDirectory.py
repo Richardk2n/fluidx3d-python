@@ -67,7 +67,7 @@ class OutputDirectory:
         parameters = json.load(f)
         f.close()
 
-        if "internal" in parameters:
+        if "internal" in parameters:  # TODO proper versions
             internal = parameters["internal"]
             if "SI" in internal:
                 self.SI = internal["SI"]
@@ -75,6 +75,13 @@ class OutputDirectory:
                 print("Missing SI in parameters.json")
         else:
             print("Output directory too old: Missing internal in parameters.json")
+            if "info" in parameters and "conversions" in parameters["info"]:
+                print("Falling back to conversions")
+                L0 = parameters["info"]["conversions"]["L0"]
+                T0 = parameters["info"]["conversions"]["T0"]
+                rho0 = parameters["info"]["conversions"]["rho0"]
+
+                self.SI = {"kg": rho0 * L0**3, "m": L0, "s": T0}
 
         vtkPath = self.path / "vtkfiles"
         arrays = [f for f in natsorted(os.listdir(vtkPath)) if (vtkPath / f).is_dir()]
