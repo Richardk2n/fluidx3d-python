@@ -26,7 +26,8 @@ def setRC():
                     r"\sisetup{per-mode=fraction}"
                     r"\sisetup{separate-uncertainty=true}"
                     r"\usepackage{amsmath}"
-                    r"\newcommand{\abs}[1]{\lvert#1\rvert}"
+                    # r"\newcommand{\abs}[1]{\lvert#1\rvert}"
+                    r"\newcommand{\abs}[1]{\left|#1\right|}"
                     r"\newcommand{\ma}[1]{\underline{#1}}"
                     r"\DeclareMathOperator{\Tr}{Tr}"
                 ]
