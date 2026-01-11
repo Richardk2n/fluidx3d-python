@@ -32,6 +32,7 @@ symbols = {
     "density": "ρ",
     "flags": "flags",
     "strainRateTensor": "D",
+    "viscousStressTensor": "σᵥ",
     "polymerConformationTensor": "C",
 }
 conversion = {
@@ -41,6 +42,7 @@ conversion = {
     "density": [1, -3, 0],
     "flags": [0, 0, 0],
     "strainRateTensor": [0, 0, -1],
+    "viscousStressTensor": [1, -1, -2],
     "polymerConformationTensor": [0, 0, 0],
 }
 numberComponents = {
@@ -50,6 +52,7 @@ numberComponents = {
     "density": 1,
     "flags": 1,
     "strainRateTensor": 6,
+    "viscousStressTensor": 6,
     "polymerConformationTensor": 6,
 }
 
@@ -65,6 +68,7 @@ class OutputDirectory:
         jsonFile = self.path / "parameters.json"
         f = open(jsonFile)
         parameters = json.load(f)
+        self.parameters = parameters
         f.close()
 
         if "internal" in parameters:  # TODO proper versions
