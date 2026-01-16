@@ -134,6 +134,9 @@ class Roscoe:
     def r2(self, t):
         return modelRadiusSquared(t, self.a1**2, self.a2**2, self.ttf, self.phase)
 
+    def unpack(self):
+        return [self.a1, self.a2, self.a3, self.th, self.ttf, self.phase], self.errors
+
     def __str__(self):  # TODO make better
         return str(
             parseErrorKnown([self.a1, self.a2, self.a3, self.th, self.ttf, self.phase], self.errors)
