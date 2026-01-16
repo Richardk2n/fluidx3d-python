@@ -11,6 +11,7 @@ import numpy as np
 from numpy.fft import fft, fftfreq
 from scipy.optimize import curve_fit
 
+from fluidx3d.eval import parseErrorKnown
 from fluidx3d.eval.models.Roscoe import modelRadiusSquared, modelX1, modelY1
 
 
@@ -134,7 +135,9 @@ class Roscoe:
         return modelRadiusSquared(t, self.a1**2, self.a2**2, self.ttf, self.phase)
 
     def __str__(self):  # TODO make better
-        return str([[self.a1, self.a2, self.a3, self.th, self.ttf, self.phase], self.errors])
+        return str(
+            parseErrorKnown([self.a1, self.a2, self.a3, self.th, self.ttf, self.phase], self.errors)
+        )
 
 
 __all__ = ["extractRoscoe", "Roscoe"]

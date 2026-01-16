@@ -46,7 +46,7 @@ class CY:
 
         if not sol.converged:
             print(f"{sol=}")
-            raise Exception("Could not find alpha2")
+            raise Exception("Could not find edge velocity gradient")
 
         edgeGD = sol.root
 
