@@ -90,12 +90,17 @@ def extractRoscoe(timesteps, point1, point5, cutoff):
         t,
         p1[..., 0] ** 2 + p1[..., 1] ** 2,
         [a1sGuess, a2sGuess, ttfGuess, phaseGuess],
-        bounds=([1, 0, -np.inf, 0], [np.inf, np.inf, 0, 2 * np.pi]),
+        bounds=([0.99, 0, -np.inf, 0], [np.inf, np.inf, 0, 2 * np.pi]),
     )
     e1 = np.sqrt(np.diag(cov1))
 
     alpha3 = np.average(p5[..., 2])
     err3 = np.std(p5[..., 2], ddof=1)
+
+    out1 = getModelTheta(*param1)(t, np.pi / 8)[: len(t)]
+    idx = np.argmax(out1)
+    if out1[idx] * p1[idx, 0] < 0:
+        param1[3] += np.pi
 
     param2, cov2 = curve_fit(
         getModelTheta(*param1),
