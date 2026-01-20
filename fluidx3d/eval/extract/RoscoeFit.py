@@ -90,7 +90,7 @@ def extractRoscoe(timesteps, point1, point5, cutoff):
         t,
         p1[..., 0] ** 2 + p1[..., 1] ** 2,
         [a1sGuess, a2sGuess, ttfGuess, phaseGuess],
-        bounds=([0.99, 0, -np.inf, 0], [np.inf, np.inf, 0, 2 * np.pi]),
+        bounds=([0.98, 0, -np.inf, 0], [np.inf, np.inf, 0, 2 * np.pi]),
     )
     e1 = np.sqrt(np.diag(cov1))
 
