@@ -1,5 +1,5 @@
 # FluidX3D Python
-This provides python libraries to work with FluidX3D.
+This provides python libraries to work with [FluidX3D](https://github.com/Richardk2n/FluidX3D).
 This project was written as a part of my doctoral thesis (will be linked here if it is ever published).
 It is used to evaluate the simulation output.
 
