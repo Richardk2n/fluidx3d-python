@@ -1,5 +1,4 @@
 # FluidX3D Python
------------------
 This provides python libraries to work with FluidX3D.
 This project was written as a part of my doctoral thesis (will be linked here if it is ever published).
 It is used to evaluate the simulation output.
@@ -7,7 +6,6 @@ It is used to evaluate the simulation output.
 It requires Python 3.8 or newer.
 
 ## Installing
--------------
 
 This is not on PyPi or similar.
 To install it, clone the repo, enter the directory and run the following command.
@@ -19,7 +17,6 @@ pip install -e .
 This installs the local project in a way, that allows edits to the local project.
 
 ## Developing
--------------
 
 Install development dependencies with (you might want to create a virtualenv first):
 
