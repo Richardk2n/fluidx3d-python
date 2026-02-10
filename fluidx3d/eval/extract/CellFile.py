@@ -26,7 +26,7 @@ class CellFile:
         data = pv.read(self.path)
         self.points = data.points
         self.volume = data.volume
-        self.area = data.extract_surface().area
+        self.area = data.extract_surface(algorithm="dataset_surface").area
 
         self.com = np.average(self.points, 0)
         self.p1 = self.points[1] - self.com
